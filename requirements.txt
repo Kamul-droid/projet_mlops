@@ -1,0 +1,5 @@
+fastapi==0.95.1
+uvicorn==0.20.0
+pandas==1.5.3
+great_expectations==0.18.19
+# pyyaml==6.0
