@@ -1,7 +1,8 @@
 import great_expectations as ge
 import pandas as pd
 import yaml
-from typing import Dict
+from typing import Dict, Tuple
+
 
 def load_config() -> dict:
     """
@@ -59,11 +60,34 @@ def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str
 
     age_check = ge_df.expect_column_values_to_be_between("age", min_value=1, max_value=120)
     sex_check = ge_df.expect_column_values_to_be_in_set("sex", [0, 1])
-    
+    chol_check = ge_df.expect_column_values_to_be_between("chol", min_value=100, max_value=500)  
+    fbs_check = ge_df.expect_column_values_to_be_in_set("fbs", [0, 1])
+    trestbps_check = ge_df.expect_column_values_to_be_between("trestbps", min_value=80, max_value=200) 
+
     results["age_value_check"] = age_check.success
     results["sex_value_check"] = sex_check.success
+    results["chol_value_check"] = chol_check.success
+    results["fbs_value_check"] = fbs_check.success
+    results["trestbps_value_check"] = trestbps_check.success
 
     return results
+
+def delete_outliers(df: pd.DataFrame, thresholds: Dict[str, Tuple[float, float]]) -> pd.DataFrame:
+    """
+    Supprime les enregistrements du DataFrame qui dépassent les seuils définis pour certaines colonnes.
+
+    Args:
+        df (pd.DataFrame): DataFrame contenant les données.
+        thresholds (Dict[str, Tuple[float, float]]): Dictionnaire où les clés sont les noms de colonnes
+            et les valeurs sont des tuples représentant les bornes minimum et maximum pour chaque colonne.
+
+    Returns:
+        pd.DataFrame: DataFrame sans les enregistrements qui dépassent les seuils spécifiés.
+    """
+    for column, (min_val, max_val) in thresholds.items():
+        df = df[(df[column] >= min_val) & (df[column] <= max_val)]
+    return df
+
 
 def main() -> None:
     """
@@ -80,6 +104,15 @@ def main() -> None:
 
     validation_results = validate_with_great_expectations(df, config)
     print("Résultats des contrôles de qualité avec Great Expectations:\n", validation_results)
+
+    thresholds = {
+        "age": (1, 120),
+        "chol": (100, 500),
+        "fbs": (0, 1),
+        "trestbps": (80, 200)
+    }
+    df_cleaned = delete_outliers(df, thresholds)
+    print(f"Nombre d'enregistrements après suppression des outliers: {len(df_cleaned)}")
 
 if __name__ == "__main__":
     main()
