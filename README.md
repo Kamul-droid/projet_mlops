@@ -24,3 +24,79 @@ Le fichier `config/config.yaml` permet de configurer :
    ```bash
    uvicorn scripts.server:app --reload
    ```
+Bien sûr, voici une suggestion de titre pour cette section du projet :
+
+---
+
+## Orchestration des Pipelines et Suivi des Expériences avec Prefect et MLflow
+
+Dans cette partie du projet, nous mettons en place des pipelines de machine learning utilisant **Prefect** pour l'orchestration des tâches et **MLflow** pour le suivi des expériences et la gestion des artefacts. Cette section comprend l'entraînement des modèles de régression logistique et de RandomForest, ainsi que l'intégration des résultats dans un système de gestion centralisé pour le suivi des performances.
+### Structure du projet
+Le projet est organisé en plusieurs dossiers et fichiers pour une gestion optimale des tâches. 
+Voici la structure du projet :
+
+/project-directory
+│
+├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
+├── /scripts                 # Scripts des pipelines et autres tâches
+│   ├── pipeline_2.py        # Pipeline avec régression logistique
+│   ├── pipeline_3.py        # Pipeline avec RandomForest
+│   ├── data_loader.py       # Chargement des données
+│   ├── preprocessing.py     # Prétraitement des données
+│   ├── quality_checks.py    # Contrôle de la qualité des données
+│   └── server.py            # Serveur pour exécution des workflows
+├── /artifacts               # Artefacts générés : graphes, métriques, modèles
+├── /great_expectations      # Vérification de la qualité des données (expectations)
+├── /mlflow_run              # Répertoire pour stocker les métadonnées des expériences MLflow
+├── /mlruns/0                # Contient les logs et les résultats des exécutions MLflow
+└── config.yaml              # Fichier de configuration pour l'orchestration
+
+### Installation des dépendances
+
+  ```bash
+pip install mlflow 
+pip install prefect 
+
+### Démarrage de MLflow UI
+
+Lancer CMD dans le répertoire cloné du projet et exécutez la commande suivante :
+  ```bash
+ mlflow ui --backend-store-uri scripts/mlflow_run
+
+ Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Tu pourras visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
+ 
+  ### Exécution des pipelines Prefect
+Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
+ **- pipeline de régression logistique**
+Pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
+
+  ```bash
+python scripts/pipeline_2.py
+
+**- pipeline de RandomForest**
+Pour entraîner le  modèle de RandomForest, exécute la commande suivante :
+  ```bash
+python scripts/pipeline_3.py
+
+### Visualisation les résultats dans MLflow UI
+Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
+Pour consulter :
+Metrics : **précision** et le **F1 Score** des modèles.
+Artifacts : Les artefacts ici sont: les courbes ROC, les matrices de confusion et les modèles enregistrés.
+
+### Démarrage de l'interface Prefect (Prefect UI)
+L’interface graphique de Prefect permet de visualiser vos workflows, suivre leur exécution, et gérer les tâches en cours. Pour y accéder, il faut démarrer le serveur Prefect UI localement.
+
+Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal (CMD) :
+
+  ```bash
+prefect server start
+Pour demarrer les services de prefect :
+- Un serveur GraphQL pour interagir avec les flows
+- Un serveur de base de données pour stocker les logs et les états d'exécution
+- Une interface web (Prefect UI) pour visualiser et gérer les workflows
+L’interface web sera disponible à l'adresse suivante : http://localhost:4200
+
+
+
+
