@@ -31,7 +31,7 @@ Bien sûr, voici une suggestion de titre pour cette section du projet :
 ## Orchestration des Pipelines et Suivi des Expériences avec Prefect et MLflow
 
 Dans cette partie du projet, nous mettons en place des pipelines de machine learning utilisant **Prefect** pour l'orchestration des tâches et **MLflow** pour le suivi des expériences et la gestion des artefacts. Cette section comprend l'entraînement des modèles de régression logistique et de RandomForest, ainsi que l'intégration des résultats dans un système de gestion centralisé pour le suivi des performances.
-### Structure du projet
+### Structure dossier du projet
 Le projet est organisé en plusieurs dossiers et fichiers pour une gestion optimale des tâches. 
 Voici la structure du projet :
 
