@@ -35,6 +35,7 @@ Dans cette partie du projet, nous mettons en place des pipelines de machine lear
 Le projet est organisé en plusieurs dossiers et fichiers pour une gestion optimale des tâches. 
 Voici la structure du projet :
 
+```
 /project-directory
 │
 ├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
@@ -50,6 +51,7 @@ Voici la structure du projet :
 ├── /mlflow_run              # Répertoire pour stocker les métadonnées des expériences MLflow
 ├── /mlruns/0                # Contient les logs et les résultats des exécutions MLflow
 └── config.yaml              # Fichier de configuration pour l'orchestration
+```
 
 ### Installation des dépendances
 
