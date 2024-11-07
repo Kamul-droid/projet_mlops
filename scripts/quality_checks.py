@@ -11,7 +11,7 @@ def load_config() -> dict:
     Returns:
         dict: Dictionnaire contenant la configuration des données et les types attendus.
     """
-    with open("config.yaml", "r") as file:
+    with open("config/config.yaml", "r") as file:
         return yaml.safe_load(file)
 
 def check_null_values(df: pd.DataFrame) -> pd.Series:
@@ -49,22 +49,18 @@ def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str
     Returns:
         Dict[str, bool]: Résultats de validation, indiquant le succès pour chaque contrôle.
     """
-    # Créer le DataContext de Great Expectations
-    context = ge.data_context.DataContext("great_expectations")
     ge_df = ge.dataset.PandasDataset(df)
-    
-    # Validation des types de colonnes selon la configuration
     expected_types = config["expected_data_types"]
+    
     results = {}
 
     for column, dtype in expected_types.items():
         expectation_result = ge_df.expect_column_values_to_be_of_type(column, dtype)
         results[f"{column}_type_check"] = expectation_result.success
 
-    # Validation des valeurs spécifiques pour certaines colonnes
     age_check = ge_df.expect_column_values_to_be_between("age", min_value=1, max_value=120)
     sex_check = ge_df.expect_column_values_to_be_in_set("sex", [0, 1])
-    chol_check = ge_df.expect_column_values_to_be_between("chol", min_value=100, max_value=600)  
+    chol_check = ge_df.expect_column_values_to_be_between("chol", min_value=100, max_value=500)  
     fbs_check = ge_df.expect_column_values_to_be_in_set("fbs", [0, 1])
     trestbps_check = ge_df.expect_column_values_to_be_between("trestbps", min_value=80, max_value=200) 
 
@@ -97,31 +93,24 @@ def main() -> None:
     """
     Fonction principale pour exécuter toutes les vérifications de qualité sur les données.
     """
-    # Chargement de la configuration
     config = load_config()
     df = pd.read_csv(config["processed_data_path"])
 
-    # Vérification des valeurs nulles
     null_values = check_null_values(df)
     print("Valeurs nulles:\n", null_values)
 
-    # Vérification des doublons
     duplicates = check_duplicates(df)
     print("Doublons:\n", duplicates)
 
-    # Validation avec Great Expectations
     validation_results = validate_with_great_expectations(df, config)
     print("Résultats des contrôles de qualité avec Great Expectations:\n", validation_results)
 
-    # Définition des seuils pour la suppression des outliers
     thresholds = {
         "age": (1, 120),
         "chol": (100, 500),
         "fbs": (0, 1),
         "trestbps": (80, 200)
     }
-    
-    # Suppression des outliers
     df_cleaned = delete_outliers(df, thresholds)
     print(f"Nombre d'enregistrements après suppression des outliers: {len(df_cleaned)}")
 

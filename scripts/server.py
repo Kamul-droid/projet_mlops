@@ -7,16 +7,34 @@ from scripts.preprocessing import preprocess_data
 app = FastAPI()
 
 @app.get("/")
-def root():
+def root() -> dict:
+    """
+    Point de terminaison racine de l'API.
+
+    Returns:
+        dict: Message de bienvenue de l'API.
+    """
     return {"message": "Heart Attack Data Pipeline API"}
 
 @app.post("/ingest")
-def ingest_data():
+def ingest_data() -> dict:
+    """
+    Déclenche l'ingestion des données en appelant la fonction principale du module data_loader.
+
+    Returns:
+        dict: Message confirmant la fin de l'ingestion des données.
+    """
     data_loader.main()
     return {"message": "Ingestion des données terminée"}
 
 @app.get("/quality-checks")
-def run_quality_checks():
+def run_quality_checks() -> JSONResponse:
+    """
+    Exécute les contrôles de qualité en utilisant le module quality_checks.
+
+    Returns:
+        JSONResponse: Résultats des contrôles de qualité ou message d'erreur en cas d'échec.
+    """
     try:
         result = quality_checks.main()
         return JSONResponse(content={"message": "Contrôles de qualité terminés", "details": result})
@@ -24,7 +42,13 @@ def run_quality_checks():
         return JSONResponse(status_code=500, content={"message": "Erreur lors des contrôles de qualité", "error": str(e)})
 
 @app.get("/data")
-def get_data():
+def get_data() -> list:
+    """
+    Récupère un échantillon des données traitées depuis le fichier CSV.
+
+    Returns:
+        list: Liste des enregistrements sous forme de dictionnaires.
+    """
     try:
         data = pd.read_csv("data/processed_heart.csv").head(10)
         return data.to_dict(orient="records")
@@ -38,7 +62,13 @@ def get_data():
         raise HTTPException(status_code=500, detail=f"Erreur serveur: {e}")
 
 @app.post("/preprocess")
-def preprocess():
+def preprocess() -> dict:
+    """
+    Lance le prétraitement des données en appelant la fonction preprocess_data du module preprocessing.
+
+    Returns:
+        dict: Message confirmant la fin du prétraitement.
+    """
     try:
         df = pd.read_csv("data/processed_heart.csv")
         
