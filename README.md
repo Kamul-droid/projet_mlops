@@ -56,12 +56,14 @@ Voici la structure du projet :
   ```bash
 pip install mlflow 
 pip install prefect 
+   ```
 
 ### Démarrage de MLflow UI
 
 Lancer CMD dans le répertoire cloné du projet et exécutez la commande suivante :
   ```bash
  mlflow ui --backend-store-uri scripts/mlflow_run
+   ```
 
  Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Tu pourras visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
  
@@ -72,11 +74,13 @@ Pour entraîner le modèle de **Logistic_regression**, exécuter la commande sui
 
   ```bash
 python scripts/pipeline_2.py
+   ```
 
 **- pipeline de RandomForest**
 Pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```bash
 python scripts/pipeline_3.py
+   ```
 
 ### Visualisation les résultats dans MLflow UI
 Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
@@ -91,6 +95,8 @@ Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal 
 
   ```bash
 prefect server start
+   ```
+
 Pour demarrer les services de prefect :
 - Un serveur GraphQL pour interagir avec les flows
 - Un serveur de base de données pour stocker les logs et les états d'exécution
