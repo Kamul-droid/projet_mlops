@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731008167922
+current_stage: None
+description: null
+last_updated_timestamp: 1731008167922
+name: LogisticRegression_Heart_Model
+run_id: e21bb73ab3ee4ebd9ae266d0b2275f78
+run_link: null
+source: file:///C:/Users/HP/Desktop/Scraping_GitHub_Topics-main/MLOPS/ops/projet_mlops/scripts/mlflow_run/664836091588214650/e21bb73ab3ee4ebd9ae266d0b2275f78/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/HP/Desktop/Scraping_GitHub_Topics-main/MLOPS/ops/projet_mlops/scripts/mlflow_run/664836091588214650/e21bb73ab3ee4ebd9ae266d0b2275f78/artifacts/model
+user_id: null
+version: 3

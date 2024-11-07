@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/HP/Desktop/Scraping_GitHub_Topics-main/MLOPS/ops/projet_mlops/scripts/mlflow_run/664836091588214650/234a484cb3724ce599a704706a8b7dfc/artifacts
+end_time: 1730994132668
+entry_point_name: ''
+experiment_id: '664836091588214650'
+lifecycle_stage: active
+run_id: 234a484cb3724ce599a704706a8b7dfc
+run_name: persistent-bird-361
+run_uuid: 234a484cb3724ce599a704706a8b7dfc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730994125059
+status: 3
+tags: []
+user_id: HP

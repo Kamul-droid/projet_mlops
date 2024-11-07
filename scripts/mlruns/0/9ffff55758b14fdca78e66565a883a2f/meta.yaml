@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/HP/Desktop/Scraping_GitHub_Topics-main/MLOPS/ops/projet_mlops/scripts/mlruns/0/9ffff55758b14fdca78e66565a883a2f/artifacts
+end_time: 1730954478261
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9ffff55758b14fdca78e66565a883a2f
+run_name: polite-shad-545
+run_uuid: 9ffff55758b14fdca78e66565a883a2f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1730954466014
+status: 3
+tags: []
+user_id: HP
