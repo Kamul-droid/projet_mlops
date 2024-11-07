@@ -67,7 +67,7 @@ Lancer CMD dans le répertoire cloné du projet et exécutez la commande suivant
  mlflow ui --backend-store-uri scripts/mlflow_run
    ```
 
- Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Tu pourras visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
+ Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
  
   ### Exécution des pipelines Prefect
 Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
