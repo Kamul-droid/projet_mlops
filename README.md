@@ -87,6 +87,7 @@ python scripts/pipeline_3.py
 ### Visualisation les résultats dans MLflow UI
 Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
 Pour consulter :
+Accéder à Expérience 1
 Metrics : **précision** et le **F1 Score** des modèles.
 Artifacts : Les artefacts ici sont: les courbes ROC, les matrices de confusion et les modèles enregistrés.
 
