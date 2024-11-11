@@ -1,8 +1,9 @@
+import data_loader
 import pandas as pd
+import quality_checks
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from scripts import data_loader, quality_checks
-from scripts.preprocessing import preprocess_data
+from preprocessing import preprocess_data
 
 app = FastAPI()
 

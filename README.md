@@ -5,7 +5,10 @@ Ce projet implémente un pipeline pour l'ingestion, le contrôle de qualité et 
 
 ## Prérequis
 - Python 3.x
-- Installez les dépendances via `pip install -r requirements.txt`
+- Poetry 
+- Installez les dépendances via 
+  -`poetry shell`
+  -`poetry install` (Cette commande crée un environnement de travail virtuel avec toutes les dépendances)
 
 ## Configuration
 Le fichier `config/config.yaml` permet de configurer :
@@ -20,10 +23,28 @@ Le fichier `config/config.yaml` permet de configurer :
 4. **server.py** : API pour lancer les processus via des endpoints HTTP avec **FastAPI**.
 
 ## Utilisation
-1. Lancer le serveur FastAPI avec la commande :
+1. Ouvrir un shell poetry dans le dossier scripts et lancer le serveur FastAPI avec la commande :
    ```bash
-   uvicorn scripts.server:app --reload
+   uvicorn server:app --reload
    ```
+
+
+### Notebook pour le preprocessing
+```
+/project-directory
+│
+├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
+├── /scripts                 # Scripts des pipelines et autres tâches
+├── main.ipynb               # Notebook pour le preprocessing
+
+```
+
+
+ ```poetry shell
+poetry run jupyter lab --port=6200
+```
+
+
 
 ## Orchestration des Pipelines et Suivi des Expériences avec Prefect et MLflow
 
@@ -46,54 +67,17 @@ Voici la structure du projet :
 ├── /artifacts               # Artefacts générés : graphes, métriques, modèles
 ├── /great_expectations      # Vérification de la qualité des données (expectations)
 ├── /mlflow_run              # Répertoire pour stocker les métadonnées des expériences MLflow
-├── /mlruns/0                # Contient les logs et les résultats des exécutions MLflow
+│   ├── 0                    # Contient les logs et les résultats des exécutions MLflow
+│   ├── models               # Contient les logs et les résultats des models MLflow
 └── config.yaml              # Fichier de configuration pour l'orchestration
 ```
-
-### Installation des dépendances
-
-  ```bash
-pip install mlflow 
-pip install prefect 
-   ```
-
-### Démarrage de MLflow UI
-
-Lancer CMD dans le répertoire cloné du projet et exécutez la commande suivante :
-  ```bash
- mlflow ui --backend-store-uri scripts/mlflow_run
-   ```
-
- Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
- 
-  ### Exécution des pipelines Prefect
-Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
- **- pipeline de régression logistique**
-Pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
-
-  ```bash
-python scripts/pipeline_2.py
-   ```
-
-**- pipeline de RandomForest**
-Pour entraîner le  modèle de RandomForest, exécute la commande suivante :
-  ```bash
-python scripts/pipeline_3.py
-   ```
-
-### Visualisation les résultats dans MLflow UI
-Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
-Pour consulter :
-Accéder à Expérience 1
-Metrics : **précision** et le **F1 Score** des modèles.
-Artifacts : Les artefacts ici sont: les courbes ROC, les matrices de confusion et les modèles enregistrés.
 
 ### Démarrage de l'interface Prefect (Prefect UI)
 L’interface graphique de Prefect permet de visualiser vos workflows, suivre leur exécution, et gérer les tâches en cours. Pour y accéder, il faut démarrer le serveur Prefect UI localement.
 
 Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal (CMD) :
 
-  ```bash
+  ```poetry shell
 prefect server start
    ```
 
@@ -104,5 +88,33 @@ Pour demarrer les services de prefect :
 L’interface web sera disponible à l'adresse suivante : http://localhost:4200
 
 
+### Démarrage de MLflow UI
 
+Ouvrir un shell poetry avec la  CMD `poetry shell` à la racine du projet :
+  ```poetry shell
+ mlflow ui --backend-store-uri scripts/mlflow_run
+   ```
 
+ Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
+ 
+  ### Exécution des pipelines Prefect
+Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
+ **- pipeline de régression logistique**
+Pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante à partir de la racine du projet:
+
+  ```poetry shell
+python scripts/pipeline_2.py
+   ```
+
+**- pipeline de RandomForest**
+Pour entraîner le  modèle de RandomForest, exécute la commande suivante à partir de la racine du projet :
+  ```poetry shell
+python scripts/pipeline_3.py
+   ```
+
+### Visualisation les résultats dans MLflow UI
+Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
+Pour consulter :
+Accéder à Expérience 1
+Metrics : **précision** et le **F1 Score** des modèles.
+Artifacts : Les artefacts ici sont: les courbes ROC, les matrices de confusion et les modèles enregistrés.

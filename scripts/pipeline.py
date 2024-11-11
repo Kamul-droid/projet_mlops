@@ -1,12 +1,15 @@
-import pandas as pd
+import os
+
+import matplotlib.pyplot as plt
 import mlflow
 import mlflow.sklearn
-from prefect import task, flow, get_run_logger
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, roc_curve, auc, confusion_matrix
-import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
-import os
+from prefect import flow, get_run_logger, task
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
+                             roc_curve)
+
 
 @task
 def train_and_log_model():
@@ -18,10 +21,10 @@ def train_and_log_model():
     mlflow.set_experiment(experiment_name)
 
     # Charger les données nettoyées
-    X_train = pd.read_csv(r"..\data/X_train_clean.csv")
-    X_test = pd.read_csv(r"..\data/X_test_clean.csv")
-    y_train = pd.read_csv(r"..\data/y_train.csv").squeeze()
-    y_test = pd.read_csv(r"..\data/y_test.csv").squeeze()
+    X_train = pd.read_csv(r"data/X_train_clean.csv")
+    X_test = pd.read_csv(r"data/X_test_clean.csv")
+    y_train = pd.read_csv(r"data/y_train.csv").squeeze()
+    y_test = pd.read_csv(r"data/y_test.csv").squeeze()
     
     # Initialiser et entraîner le modèle
     model = RandomForestClassifier(n_estimators=100, random_state=42)
