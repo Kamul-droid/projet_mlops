@@ -8,7 +8,7 @@ Ce projet implémente un pipeline pour l'ingestion, le contrôle de qualité et 
 - Poetry 
 - Installez les dépendances via 
   -`poetry shell`
-  -`poetry install` (Cette commande crée un environnement de travail virtuel avec toutes les dépendances)
+  -`poetry install` (Depuis la racine du projet; executer cette commande. Elle crée un environnement de travail virtuel avec toutes les dépendances)
 
 ## Configuration
 Le fichier `config/config.yaml` permet de configurer :
