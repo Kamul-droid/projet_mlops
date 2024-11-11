@@ -72,7 +72,7 @@ Voici la structure du projet :
 └── config.yaml              # Fichier de configuration pour l'orchestration
 ```
 
-### Insrallation des dépendances 
+### Installation des dépendances 
 
  ```poetry shell
 pip install mlflow==2.17.2
@@ -105,6 +105,10 @@ Ouvrir un shell poetry avec la  CMD `poetry shell` à la racine du projet :
  Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
  
   ### Exécution des pipelines Prefect
+Avant d'exécuter les pipelines Prefect, exécuter cette commande : 
+```poetry shell
+prefect config set PREFECT_API_URL="http://127.0.0.1:4200/api"
+```
 Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
  **- pipeline de régression logistique**
 Pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante à partir de la racine du projet:
