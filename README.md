@@ -72,10 +72,17 @@ Voici la structure du projet :
 └── config.yaml              # Fichier de configuration pour l'orchestration
 ```
 
+### Insrallation des dépendances 
+
+ ```poetry shell
+pip install mlflow==2.17.2
+pip install prefect==2.20.11
+```
+
 ### Démarrage de l'interface Prefect (Prefect UI)
 L’interface graphique de Prefect permet de visualiser vos workflows, suivre leur exécution, et gérer les tâches en cours. Pour y accéder, il faut démarrer le serveur Prefect UI localement.
 
-Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal (CMD) :
+Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal (CMD) :2.17.2
 
   ```poetry shell
 prefect server start
