@@ -96,7 +96,7 @@ L’interface web sera disponible à l'adresse suivante : http://localhost:4200
 
 
 ### Démarrage de MLflow UI
-
+scripts/mlfow_run est le répertoire dans lequel les expériences et les artefacts et les mmodéles seront sauvegardés
 Ouvrir un shell poetry avec la  CMD `poetry shell` à la racine du projet :
   ```poetry shell
  mlflow ui --backend-store-uri scripts/mlflow_run
