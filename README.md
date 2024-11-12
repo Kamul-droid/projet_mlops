@@ -5,10 +5,7 @@ Ce projet implémente un pipeline pour l'ingestion, le contrôle de qualité et 
 
 ## Prérequis
 - Python 3.x
-- Poetry 
-- Installez les dépendances via 
-  -`poetry shell`
-  -`poetry install` (Depuis la racine du projet; executer cette commande. Elle crée un environnement de travail virtuel avec toutes les dépendances)
+- Docker Desktop
 
 ## Configuration
 Le fichier `config/config.yaml` permet de configurer :
@@ -72,57 +69,64 @@ Voici la structure du projet :
 └── config.yaml              # Fichier de configuration pour l'orchestration
 ```
 
-### Installation des dépendances 
 
 
 
-### Démarrage de l'interface Prefect (Prefect UI)
-L’interface graphique de Prefect permet de visualiser vos workflows, suivre leur exécution, et gérer les tâches en cours. Pour y accéder, il faut démarrer le serveur Prefect UI localement.
+### Installation des dépendances et démarrage des services
 
-Pour démarrer le serveur Prefect UI, exécuter cette commande dans le terminal (CMD) :2.17.2
+Le projet utilise Docker pour simplifier l’installation et le déploiement. Suivez les instructions ci-dessous pour construire l'image Docker et démarrer les services nécessaires.
+
+Depuis le répertoire racine du projet, exécutez la commande suivante pour construire l'image Docker :
 
   ```poetry shell
-prefect server start
+docker build -t heart-attack-data-pipeline .
    ```
 
-Pour demarrer les services de prefect :
-- Un serveur GraphQL pour interagir avec les flows
-- Un serveur de base de données pour stocker les logs et les états d'exécution
-- Une interface web (Prefect UI) pour visualiser et gérer les workflows
-L’interface web sera disponible à l'adresse suivante : http://localhost:4200
+   Une fois l'image construite, lancez un conteneur avec la commande suivante :
 
-
-### Démarrage de MLflow UI
-scripts/mlfow_run est le répertoire dans lequel les expériences et les artefacts et les mmodéles seront sauvegardés
-Ouvrir un shell poetry avec la  CMD `poetry shell` à la racine du projet :
-  ```poetry shell
- mlflow ui --backend-store-uri scripts/mlflow_run
+```poetry shell
+docker run -p 8000:8000 -p 6200:6200 -p 5000:5000 -p 4200:4200 heart-attack-data
    ```
 
- Cette commmande va démarrer le serveur MLflow à l'adresse : http://localhost:5000. Visualiser les logs, les métriques et les artefacts générés par les exécutions des pipelines.
+
+
+Cette commande démarre les services suivants :
+
+Prefect UI (accessible à l'adresse : http://localhost:4200)
+MLflow UI (accessible à l'adresse : http://localhost:5000)
+
+
  
   ### Exécution des pipelines Prefect
-Avant d'exécuter les pipelines Prefect, exécuter cette commande : 
-```poetry shell
-prefect config set PREFECT_API_URL="http://127.0.0.1:4200/api"
+
+Une fois MLflow UI démarré,  il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow. 
+
+Utilisez la commande suivante pour obtenir le nom ou l’ID du conteneur :
+
 ```
-Une fois MLflow UI démarré, maintenant il faut exécuter les pipelines pour entraîner des modèles et suivre leur exécution dans MLflow.
+docker ps
+```
+
+
+Une fois que vous avez le nom du conteneur, exécutez la commande suivante pour ouvrir un shell :
+
+```
+docker exec -it [nom_du_conteneur] /bin/sh
+```
+
+
+
  **- pipeline de régression logistique**
-Pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante à partir de la racine du projet:
+Puis pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
 
   ```poetry shell
-python scripts/pipeline_2.py
+poetry run python scripts/pipeline_2.py
    ```
 
 **- pipeline de RandomForest**
-Pour entraîner le  modèle de RandomForest, exécute la commande suivante à partir de la racine du projet :
+Puis pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```poetry shell
-python scripts/pipeline_3.py
+poetry run python scripts/pipeline_3.py
    ```
 
-### Visualisation les résultats dans MLflow UI
-Après l'exécution des pipelines, la visualisation des résultats peut être faite dans MLflow UI. Accéder à l'interface MLflow à l'adresse suivante : http://localhost:5000.
-Pour consulter :
-Accéder à Expérience 1
-Metrics : **précision** et le **F1 Score** des modèles.
-Artifacts : Les artefacts ici sont: les courbes ROC, les matrices de confusion et les modèles enregistrés.
+
