@@ -5,38 +5,71 @@ import mlflow
 import mlflow.sklearn
 import pandas as pd
 import seaborn as sns
+from mlflow.models import EvaluationResult, MetricThreshold, infer_signature
 from prefect import flow, get_run_logger, task
+from prefect.server.events.triggers import evaluate
+from preprocessing import DataPreprocessor
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
                              roc_curve)
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 
+mlflow.set_tracking_uri(uri="http://127.0.0.1:5000") 
+
+
+#  Load the model from the previous experiment run
+logged_model = 'runs:/fe3095c5d16a48fba2bd613901ade8da/model'
+
+baseline_model_uri = logged_model
+
+# Define criteria for model to be validated against
+thresholds = {
+    "accuracy_score": MetricThreshold(
+        threshold=0.8,  # accuracy should be >=0.8
+        # min_absolute_change=0.05,  # accuracy should be at least 0.05 greater than baseline model accuracy
+        # min_relative_change=0.05,  # accuracy should be at least 5 percent greater than baseline model accuracy
+        greater_is_better=True,
+    ),
+}
 
 @task
 def train_and_log_model():
     """Entraîne le modèle, enregistre les métriques et les artefacts dans MLflow."""
-    mlflow.set_tracking_uri("mlflow_run")  # Remplacez par le chemin réel
-    experiment_name = "experience_1"
+    experiment_name = "experience_0"
     if not mlflow.get_experiment_by_name(experiment_name):
         mlflow.create_experiment(experiment_name)
     mlflow.set_experiment(experiment_name)
 
     # Charger les données nettoyées
-    X_train = pd.read_csv("data/X_train_clean.csv")
-    X_test = pd.read_csv("data/X_test_clean.csv")
-    y_train = pd.read_csv("data/y_train.csv").squeeze()
-    y_test = pd.read_csv("data/y_test.csv").squeeze()
+    df = pd.read_csv("data/heart.csv")
     
-    # Initialiser et entraîner le modèle
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
+    X = df.drop(["target"], axis=1)
+    y = df["target"]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
+    
+    
+    # Initialisation du preprocesseur
+    preprocessor = DataPreprocessor()
+   
+   
+    # Créer un pipeline avec le préprocesseur et le modèle
+    pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('model', RandomForestClassifier(n_estimators=90, random_state=42))
+    ])
+    
+    
+    # Entraîner le modèle
+    pipeline.fit(X_train, y_train)
     
     # Prédire et calculer les métriques
-    y_pred = model.predict(X_test)
+    y_pred = pipeline.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred)
 
     # Calcul des courbes ROC et de la matrice de confusion
-    fpr, tpr, _ = roc_curve(y_test, model.predict_proba(X_test)[:, 1])
+    fpr, tpr, _ = roc_curve(y_test, pipeline.predict_proba(X_test)[:, 1])
     roc_auc = auc(fpr, tpr)
 
     cm = confusion_matrix(y_test, y_pred)
@@ -72,6 +105,10 @@ def train_and_log_model():
     metrics_csv_path = os.path.join(artifacts_path, "metrics.csv")
     metrics_df.to_csv(metrics_csv_path, index=False)
 
+    # Définir la signature du modèle
+    signature = infer_signature(X_train, y_train)
+    
+    
     # Enregistrement des artefacts dans MLflow
     with mlflow.start_run() as run:
         run_id = run.info.run_id  # Capture du run_id
@@ -83,13 +120,43 @@ def train_and_log_model():
         mlflow.log_artifact(roc_path)
         mlflow.log_artifact(cm_path)
         mlflow.log_artifact(metrics_csv_path)
+           
+        # Evaluation du modèle avec MLflow avec  le baseline défini
+        eval_data= X_test.copy()
+        eval_data["target"] = y_test
+       
+        evaluate_and_compare(candidate_model=pipeline, eval_data=eval_data,signature=signature)
         
-        # Enregistrer le modèle dans le Model Registry
-        model_name = "RandomForest_Heart_Model"
-        mlflow.sklearn.log_model(model, "model", registered_model_name=model_name)
-
+        
     logger = get_run_logger()
     logger.info(f"Modèle entraîné avec succès : Accuracy={accuracy}, F1 Score={f1}")
+
+
+@task
+# Evaluate new model and compare with the baseline
+def evaluate_and_compare(candidate_model, eval_data, signature):
+    # Enregistrer le modèle dans le Model Registry
+    candidate_model_uri = mlflow.sklearn.log_model(
+        sk_model=candidate_model,
+        artifact_path="model",
+        registered_model_name="RandomForest",
+        signature=signature
+    ).model_uri
+
+
+    # Compare the candidate model with the baseline model
+    evaluation_result: EvaluationResult = mlflow.evaluate(
+        model=candidate_model_uri,
+        data=eval_data,
+        targets="target",
+        model_type="classifier",
+        validation_thresholds=thresholds,
+        baseline_model=baseline_model_uri  # Set the baseline model for comparison
+    )
+
+    # Output results of comparison
+    print("Evaluation Result:", evaluation_result.metrics)
+
 
 @flow(name="data-quality-training-pipeline")
 def main_flow():

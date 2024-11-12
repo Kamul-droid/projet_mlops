@@ -24,7 +24,7 @@ Le fichier `config/config.yaml` permet de configurer :
 
 ## Utilisation
 1. Ouvrir un shell poetry dans le dossier scripts et lancer le serveur FastAPI avec la commande :
-   ```bash
+   ```shell poetry
    uvicorn server:app --reload
    ```
 
@@ -74,10 +74,7 @@ Voici la structure du projet :
 
 ### Insrallation des dépendances 
 
- ```poetry shell
-pip install mlflow==2.17.2
-pip install prefect==2.20.11
-```
+
 
 ### Démarrage de l'interface Prefect (Prefect UI)
 L’interface graphique de Prefect permet de visualiser vos workflows, suivre leur exécution, et gérer les tâches en cours. Pour y accéder, il faut démarrer le serveur Prefect UI localement.
