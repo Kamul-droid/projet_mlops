@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlruns/471231030860250034/b4ae7db152774ffd90448a0ec3b1fdda/artifacts
+end_time: 1731457807201
+entry_point_name: ''
+experiment_id: '471231030860250034'
+lifecycle_stage: active
+run_id: b4ae7db152774ffd90448a0ec3b1fdda
+run_name: beautiful-whale-49
+run_uuid: b4ae7db152774ffd90448a0ec3b1fdda
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731457802220
+status: 3
+tags: []
+user_id: alika

@@ -19,7 +19,7 @@ mlflow.set_tracking_uri(uri="http://127.0.0.1:5000")
 
 
 #  Load the model from the previous experiment run
-logged_model = 'runs:/fe3095c5d16a48fba2bd613901ade8da/model'
+logged_model = 'runs:/b4ae7db152774ffd90448a0ec3b1fdda/model'
 
 baseline_model_uri = logged_model
 
@@ -36,7 +36,7 @@ thresholds = {
 @task
 def train_and_log_model():
     """Entraîne le modèle, enregistre les métriques et les artefacts dans MLflow."""
-    experiment_name = "experience_0"
+    experiment_name = "experience_3"
     if not mlflow.get_experiment_by_name(experiment_name):
         mlflow.create_experiment(experiment_name)
     mlflow.set_experiment(experiment_name)
@@ -56,7 +56,7 @@ def train_and_log_model():
     # Créer un pipeline avec le préprocesseur et le modèle
     pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
-        ('model', RandomForestClassifier(n_estimators=90, random_state=42))
+        ('model', RandomForestClassifier(n_estimators=50, random_state=42))
     ])
     
     

@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlruns/471231030860250034/800a83ad08f14b1f9f97daf5a1374922/artifacts
+end_time: 1731457713505
+entry_point_name: ''
+experiment_id: '471231030860250034'
+lifecycle_stage: active
+run_id: 800a83ad08f14b1f9f97daf5a1374922
+run_name: unique-dog-537
+run_uuid: 800a83ad08f14b1f9f97daf5a1374922
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731457710356
+status: 4
+tags: []
+user_id: alika

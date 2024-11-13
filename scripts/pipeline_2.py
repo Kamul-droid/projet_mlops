@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 import matplotlib.pyplot as plt
 import mlflow
@@ -6,6 +7,7 @@ import mlflow.sklearn
 import pandas as pd
 import seaborn as sns
 from prefect import flow, get_run_logger, task
+from prefect.client.schemas.schedules import IntervalSchedule
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
                              roc_curve)
@@ -94,6 +96,8 @@ def train_and_log_model():
 @flow(name="data-quality-training-pipeline")
 def main_flow():
     train_and_log_model()
+
+
 
 # Exécuter le flux
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731457634278
+current_stage: None
+description: ''
+last_updated_timestamp: 1731457634278
+name: RandomForest
+run_id: a8b4d4cff7324ffeba20d3b63d920b37
+run_link: ''
+source: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlruns/989647242103337564/a8b4d4cff7324ffeba20d3b63d920b37/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlruns/989647242103337564/a8b4d4cff7324ffeba20d3b63d920b37/artifacts/model
+user_id: null
+version: 1
