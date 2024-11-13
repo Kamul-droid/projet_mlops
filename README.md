@@ -19,27 +19,6 @@ Le fichier `config/config.yaml` permet de configurer :
 3. **preprocessing.py** : Module de prétraitement pour normaliser et encoder les données.
 4. **server.py** : API pour lancer les processus via des endpoints HTTP avec **FastAPI**.
 
-## Utilisation
-1. Ouvrir un shell poetry dans le dossier scripts et lancer le serveur FastAPI avec la commande :
-   ```shell poetry
-   uvicorn server:app --reload
-   ```
-
-
-### Notebook pour le preprocessing
-```
-/project-directory
-│
-├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
-├── /scripts                 # Scripts des pipelines et autres tâches
-├── main.ipynb               # Notebook pour le preprocessing
-
-```
-
-
- ```poetry shell
-poetry run jupyter lab --port=6200
-```
 
 
 
