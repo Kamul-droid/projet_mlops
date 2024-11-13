@@ -17,6 +17,7 @@ mlflow.set_tracking_uri(uri="http://127.0.0.1:5000")
 # Load the model from the previous experiment run
 logged_model = 'runs:/e095852ec5f64e89894a61edb466ce8e/artifacts'
 baseline_model_uri = logged_model
+#baseline_model_uri = None
 
 # Define accuracy threshold
 thresholds = {
