@@ -120,13 +120,13 @@ docker exec -it [nom_du_conteneur] /bin/sh
 Puis pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
 
   ```poetry shell
-poetry run python scripts/pipeline_2.py
+poetry run python scripts/pipeline_logistic regression.py
    ```
 
 **- pipeline de RandomForest**
 Puis pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```poetry shell
-poetry run python scripts/pipeline_3.py
+poetry run python scripts/pipeline_random forest.py
    ```
 
 
