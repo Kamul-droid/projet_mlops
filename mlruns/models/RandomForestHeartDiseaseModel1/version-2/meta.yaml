@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731494620014
+current_stage: None
+description: ''
+last_updated_timestamp: 1731494620014
+name: RandomForestHeartDiseaseModel1
+run_id: e095852ec5f64e89894a61edb466ce8e
+run_link: ''
+source: mlflow-artifacts:/424088674470414333/e095852ec5f64e89894a61edb466ce8e/artifacts/artifacts
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/424088674470414333/e095852ec5f64e89894a61edb466ce8e/artifacts/artifacts
+user_id: null
+version: 2

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/dfd490b6759748839d4eab4326ae5e8a/artifacts
+end_time: 1731494507739
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: dfd490b6759748839d4eab4326ae5e8a
+run_name: salty-fish-44
+run_uuid: dfd490b6759748839d4eab4326ae5e8a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731494504156
+status: 3
+tags: []
+user_id: alika

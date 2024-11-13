@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/697414080860412169/d8648ef871c74519862c6bcd268d2b18/artifacts
+end_time: 1731497461965
+entry_point_name: ''
+experiment_id: '697414080860412169'
+lifecycle_stage: active
+run_id: d8648ef871c74519862c6bcd268d2b18
+run_name: abrasive-hen-104
+run_uuid: d8648ef871c74519862c6bcd268d2b18
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731497454065
+status: 3
+tags: []
+user_id: alika

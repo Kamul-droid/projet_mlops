@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/697414080860412169/75161368afb54766983546403cc9a74e/artifacts
+end_time: 1731498141347
+entry_point_name: ''
+experiment_id: '697414080860412169'
+lifecycle_stage: active
+run_id: 75161368afb54766983546403cc9a74e
+run_name: thoughtful-lamb-677
+run_uuid: 75161368afb54766983546403cc9a74e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731498136207
+status: 3
+tags: []
+user_id: alika

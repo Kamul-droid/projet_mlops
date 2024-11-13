@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/e095852ec5f64e89894a61edb466ce8e/artifacts
+end_time: 1731494620054
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: e095852ec5f64e89894a61edb466ce8e
+run_name: sedate-roo-825
+run_uuid: e095852ec5f64e89894a61edb466ce8e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731494617209
+status: 3
+tags: []
+user_id: alika

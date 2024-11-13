@@ -4509,6 +4509,17 @@ toml = ["tomli (>=2.0.1)"]
 yaml = ["pyyaml (>=6.0.1)"]
 
 [[package]]
+name = "pyenv-win"
+version = "3.1.1"
+description = "pyenv lets you easily switch between multiple versions of Python. It's simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well."
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyenv-win-3.1.1.tar.gz", hash = "sha256:c5af094d574acad7a083359c822a185cc1e4c72fef7548fdd4ec82470480d8f8"},
+    {file = "pyenv_win-3.1.1-py3-none-any.whl", hash = "sha256:e96563bd541f0b242693aa7dc4107a6047ee90c37b814e5ad210b2a0aeacaaeb"},
+]
+
+[[package]]
 name = "pygments"
 version = "2.18.0"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -6415,4 +6426,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "6b3446d90b18bf65327ebe13399a6f57d82688508d7bc3d02c6341a1b9cf1ece"
+content-hash = "6e97b2bcaf8702827db70a101da6357dfc944de286e14041c95b21d2d7dca986"

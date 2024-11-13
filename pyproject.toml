@@ -18,6 +18,8 @@ matplotlib = "^3.9.2"
 jupyterlab = "^4.3.0"
 psutil = "^6.1.0"
 pynvml = "^11.5.3"
+pyenv-win = "^3.1.1"
+virtualenv = "^20.27.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.0"

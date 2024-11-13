@@ -19,26 +19,45 @@ mlflow.set_tracking_uri(uri="http://127.0.0.1:5000")
 
 
 #  Load the model from the previous experiment run
-logged_model = 'runs:/b4ae7db152774ffd90448a0ec3b1fdda/model'
+logged_model = 'runs:/78ffaa37775340d3b888fcc040cb0b18/model'
 
-baseline_model_uri = logged_model
+baseline_model_uri = None 
+# baseline_model_uri = logged_model
 
 # Define criteria for model to be validated against
+""" Autre parametre de validation 
+    - min_absolute_change=0.05,  # accuracy should be at least 0.05 greater than baseline model accuracy
+    - min_relative_change=0.05,  # accuracy should be at least 5 percent greater than baseline model accuracy
+"""
 thresholds = {
     "accuracy_score": MetricThreshold(
         threshold=0.8,  # accuracy should be >=0.8
-        # min_absolute_change=0.05,  # accuracy should be at least 0.05 greater than baseline model accuracy
-        # min_relative_change=0.05,  # accuracy should be at least 5 percent greater than baseline model accuracy
         greater_is_better=True,
     ),
+}
+
+# Provide an Experiment description that will appear in the UI
+experiment_description = (
+    "This is the Heart disease prediction project. "
+    "This experiment contains the produce models for Heart Disease."
+)
+
+# Provide searchable tags that define characteristics of the Runs that
+# will be in this Experiment
+experiment_tags = {
+    "project_name": "heart-disease-forecasting",
+    "store_dept": "health",
+    "team": "stores-ml",
+    "project_quarter": "Q4-2024",
+    "mlflow.note.content": experiment_description,
 }
 
 @task
 def train_and_log_model():
     """Entraîne le modèle, enregistre les métriques et les artefacts dans MLflow."""
-    experiment_name = "experience_3"
+    experiment_name = "Health Models Experiment 0"
     if not mlflow.get_experiment_by_name(experiment_name):
-        mlflow.create_experiment(experiment_name)
+       mlflow.create_experiment(name=experiment_name, tags=experiment_tags)
     mlflow.set_experiment(experiment_name)
 
     # Charger les données nettoyées
@@ -54,9 +73,19 @@ def train_and_log_model():
    
    
     # Créer un pipeline avec le préprocesseur et le modèle
+    
+    params = {
+    "n_estimators": 100,
+    "max_depth": 6,
+    "min_samples_split": 10,
+    "min_samples_leaf": 4,
+    "bootstrap": True,
+    "oob_score": False,
+    "random_state": 42,
+}
     pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
-        ('model', RandomForestClassifier(n_estimators=50, random_state=42))
+        ('model', RandomForestClassifier(**params)),
     ])
     
     
@@ -74,7 +103,7 @@ def train_and_log_model():
 
     cm = confusion_matrix(y_test, y_pred)
     
-    # Créer un répertoire temporaire pour stocker les artefacts
+    # # Créer un répertoire temporaire pour stocker les artefacts
     artifacts_path = "artifacts"
     os.makedirs(artifacts_path, exist_ok=True)
     
@@ -111,8 +140,8 @@ def train_and_log_model():
     
     # Enregistrement des artefacts dans MLflow
     with mlflow.start_run() as run:
-        run_id = run.info.run_id  # Capture du run_id
-        mlflow.log_param("n_estimators", 100)
+        
+        mlflow.log_params(params)
         mlflow.log_metric("accuracy", accuracy)
         mlflow.log_metric("f1_score", f1)
         
@@ -125,7 +154,7 @@ def train_and_log_model():
         eval_data= X_test.copy()
         eval_data["target"] = y_test
        
-        evaluate_and_compare(candidate_model=pipeline, eval_data=eval_data,signature=signature)
+        evaluate_and_compare(run, artifacts_path,candidate_model=pipeline, eval_data=eval_data,signature=signature)
         
         
     logger = get_run_logger()
@@ -134,28 +163,31 @@ def train_and_log_model():
 
 @task
 # Evaluate new model and compare with the baseline
-def evaluate_and_compare(candidate_model, eval_data, signature):
+def evaluate_and_compare(run, artifact_path,candidate_model, eval_data, signature):
     # Enregistrer le modèle dans le Model Registry
-    candidate_model_uri = mlflow.sklearn.log_model(
+    model_name = "RandomForestHeartDiseaseModel1"
+    model_uri = mlflow.sklearn.log_model(
         sk_model=candidate_model,
-        artifact_path="model",
-        registered_model_name="RandomForest",
+        artifact_path=artifact_path,
         signature=signature
     ).model_uri
-
+    
+    # Register model version to ensure it is accessible in Model Registry
+    mlflow.register_model(model_uri, model_name)
 
     # Compare the candidate model with the baseline model
-    evaluation_result: EvaluationResult = mlflow.evaluate(
-        model=candidate_model_uri,
-        data=eval_data,
-        targets="target",
-        model_type="classifier",
-        validation_thresholds=thresholds,
-        baseline_model=baseline_model_uri  # Set the baseline model for comparison
-    )
+    if baseline_model_uri is not None:
+        evaluation_result: EvaluationResult = mlflow.evaluate(
+            model=run.info.artifact_uri+"/model",
+            data=eval_data,
+            targets="target",
+            model_type="classifier",
+            validation_thresholds=thresholds,
+            baseline_model=baseline_model_uri  # Set the baseline model for comparison
+        )
 
-    # Output results of comparison
-    print("Evaluation Result:", evaluation_result.metrics)
+        # Output results of comparison
+        print("Evaluation Result:", evaluation_result.metrics)
 
 
 @flow(name="data-quality-training-pipeline")
