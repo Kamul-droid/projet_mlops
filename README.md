@@ -19,55 +19,7 @@ Le fichier `config/config.yaml` permet de configurer :
 3. **preprocessing.py** : Module de prétraitement pour normaliser et encoder les données.
 4. **server.py** : API pour lancer les processus via des endpoints HTTP avec **FastAPI**.
 
-## Utilisation
-1. Ouvrir un shell poetry dans le dossier scripts et lancer le serveur FastAPI avec la commande :
-   ```shell poetry
-   uvicorn server:app --reload
-   ```
 
-
-### Notebook pour le preprocessing
-```
-/project-directory
-│
-├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
-├── /scripts                 # Scripts des pipelines et autres tâches
-├── main.ipynb               # Notebook pour le preprocessing
-
-```
-
-
- ```poetry shell
-py -m poetry run jupyter lab --port=6200
-```
-
-
-
-## Orchestration des Pipelines et Suivi des Expériences avec Prefect et MLflow
-
-Dans cette partie du projet, nous mettons en place des pipelines de machine learning utilisant **Prefect** pour l'orchestration des tâches et **MLflow** pour le suivi des expériences et la gestion des artefacts. Cette section comprend l'entraînement des modèles de régression logistique et de RandomForest, ainsi que l'intégration des résultats dans un système de gestion centralisé pour le suivi des performances.
-### Structure dossier du projet
-Le projet est organisé en plusieurs dossiers et fichiers pour une gestion optimale des tâches. 
-Voici la structure du projet :
-
-```
-/project-directory
-│
-├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
-├── /scripts                 # Scripts des pipelines et autres tâches
-│   ├── pipeline_2.py        # Pipeline avec régression logistique
-│   ├── pipeline_3.py        # Pipeline avec RandomForest
-│   ├── data_loader.py       # Chargement des données
-│   ├── preprocessing.py     # Prétraitement des données
-│   ├── quality_checks.py    # Contrôle de la qualité des données
-│   └── server.py            # Serveur pour exécution des workflows
-├── /artifacts               # Artefacts générés : graphes, métriques, modèles
-├── /great_expectations      # Vérification de la qualité des données (expectations)
-├── /mlflow_run              # Répertoire pour stocker les métadonnées des expériences MLflow
-│   ├── 0                    # Contient les logs et les résultats des exécutions MLflow
-│   ├── models               # Contient les logs et les résultats des models MLflow
-└── config.yaml              # Fichier de configuration pour l'orchestration
-```
 
 
 
@@ -121,8 +73,7 @@ docker exec -it [nom_du_conteneur] /bin/sh
 Puis pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
 
   ```poetry shell
-poetry run python scripts/pipeline_logistic regression.py
-
+poetry run python scripts/pipeline_2.py
    ```
 
 
@@ -131,8 +82,8 @@ poetry run python scripts/pipeline_logistic regression.py
 **- pipeline de RandomForest**
 Puis pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```poetry shell
-poetry run python scripts/pipeline_random forest.py
-
+poetry run python scripts/pipeline_3.py
    ```
+
 
 

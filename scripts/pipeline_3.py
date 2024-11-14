@@ -7,10 +7,10 @@ import pandas as pd
 import seaborn as sns
 from mlflow.models import EvaluationResult, MetricThreshold, infer_signature
 from prefect import flow, get_run_logger, task
-from prefect.server.events.triggers import evaluate
 from preprocessing import DataPreprocessor
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, auc, confusion_matrix, f1_score, roc_curve
+from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
+                             roc_curve)
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
@@ -30,7 +30,7 @@ baseline_model_uri = logged_model
 """
 thresholds = {
     "accuracy_score": MetricThreshold(
-        threshold=0.8,  # accuracy should be >=0.8
+        threshold=0.83,
         greater_is_better=True,
     ),
 }
@@ -47,24 +47,25 @@ experiment_tags = {
     "store_dept": "health",
     "team": "stores-ml",
     "project_quarter": "Q4-2024",
-    "mlflow.note.content": experiment_description,
+    "mlflow.note.content": "This is the Heart disease prediction project.",
 }
 
-
 @task
-def train_and_log_model():
-    """Entraîne le modèle, enregistre les métriques et les artefacts dans MLflow."""
+def train_and_log_model(retries=20, retry_delay_seconds=10):
+    """Train model and log metrics and artifacts in MLflow."""
     experiment_name = "Health Models Experiment 0"
     if not mlflow.get_experiment_by_name(experiment_name):
         mlflow.create_experiment(name=experiment_name, tags=experiment_tags)
     mlflow.set_experiment(experiment_name)
 
-    # Charger les données nettoyées
+    # Load and prepare data
     df = pd.read_csv("data/heart.csv")
 
     X = df.drop(["target"], axis=1)
     y = df["target"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
+
+    # Initialize preprocessor and model pipeline
 
     # Initialisation du preprocesseur
     preprocessor = DataPreprocessor()
@@ -95,10 +96,9 @@ def train_and_log_model():
     accuracy = accuracy_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred)
 
-    # Calcul des courbes ROC et de la matrice de confusion
+    # Plot ROC curve and confusion matrix
     fpr, tpr, _ = roc_curve(y_test, pipeline.predict_proba(X_test)[:, 1])
     roc_auc = auc(fpr, tpr)
-
     cm = confusion_matrix(y_test, y_pred)
 
     # # Créer un répertoire temporaire pour stocker les artefacts
@@ -119,7 +119,8 @@ def train_and_log_model():
     plt.savefig(roc_path)
     plt.close()
 
-    # Enregistrer la matrice de confusion comme artefact
+    # Save confusion matrix as artifact
+    cm_path = os.path.join(artifacts_path, "confusion_matrix.png")
     plt.figure(figsize=(6, 5))
     sns.heatmap(
         cm,
@@ -134,12 +135,12 @@ def train_and_log_model():
     plt.savefig(cm_path)
     plt.close()
 
-    # Enregistrer les métriques dans un fichier CSV
+    # Save metrics to CSV
     metrics_df = pd.DataFrame({"accuracy": [accuracy], "f1_score": [f1]})
     metrics_csv_path = os.path.join(artifacts_path, "metrics.csv")
     metrics_df.to_csv(metrics_csv_path, index=False)
 
-    # Définir la signature du modèle
+    # Define the model signature
     signature = infer_signature(X_train, y_train)
 
     # Enregistrement des artefacts dans MLflow
@@ -160,10 +161,13 @@ def train_and_log_model():
         evaluate_and_compare(run, artifacts_path, candidate_model=pipeline, eval_data=eval_data, signature=signature)
 
     logger = get_run_logger()
-    logger.info(f"Modèle entraîné avec succès : Accuracy={accuracy}, F1 Score={f1}")
+    logger.info(f"Model trained successfully: Accuracy={accuracy}, F1 Score={f1}")
 
+    if accuracy < thresholds["accuracy_score"].threshold:
+        raise ValueError(f"Accuracy {accuracy:.2f} below threshold {thresholds['accuracy_score'].threshold}, retry triggered.")
 
 @task
+def evaluate_and_compare(run, artifact_path, candidate_model, eval_data, signature):
 # Evaluate new model and compare with the baseline
 def evaluate_and_compare(run, artifact_path, candidate_model, eval_data, signature):
     # Enregistrer le modèle dans le Model Registry
@@ -171,13 +175,12 @@ def evaluate_and_compare(run, artifact_path, candidate_model, eval_data, signatu
     model_uri = mlflow.sklearn.log_model(
         sk_model=candidate_model, artifact_path=artifact_path, signature=signature
     ).model_uri
-
-    # Register model version to ensure it is accessible in Model Registry
+    
     mlflow.register_model(model_uri, model_name)
 
-    # Compare the candidate model with the baseline model
-    if baseline_model_uri is not None:
+    if baseline_model_uri:
         evaluation_result: EvaluationResult = mlflow.evaluate(
+            model=run.info.artifact_uri + "/artifacts",
             model=run.info.artifact_uri + "/artifacts",
             data=eval_data,
             targets="target",
@@ -185,10 +188,7 @@ def evaluate_and_compare(run, artifact_path, candidate_model, eval_data, signatu
             validation_thresholds=thresholds,
             baseline_model=baseline_model_uri,  # Set the baseline model for comparison
         )
-
-        # Output results of comparison
         print("Evaluation Result:", evaluation_result.metrics)
-
 
 @flow(name="data-quality-training-pipeline")
 def main_flow():
