@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731612763035
+current_stage: None
+description: ''
+last_updated_timestamp: 1731612763035
+name: LogisticRegression_Heart_Model
+run_id: bfec935d401e438ca2bd6b495c21284d
+run_link: ''
+source: mlflow-artifacts:/181770883814999009/bfec935d401e438ca2bd6b495c21284d/artifacts/artifacts
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/181770883814999009/bfec935d401e438ca2bd6b495c21284d/artifacts/artifacts
+user_id: null
+version: 2

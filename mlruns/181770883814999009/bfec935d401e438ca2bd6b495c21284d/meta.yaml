@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/181770883814999009/bfec935d401e438ca2bd6b495c21284d/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '181770883814999009'
+lifecycle_stage: active
+run_id: bfec935d401e438ca2bd6b495c21284d
+run_name: carefree-snipe-513
+run_uuid: bfec935d401e438ca2bd6b495c21284d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731612758424
+status: 1
+tags: []
+user_id: alika

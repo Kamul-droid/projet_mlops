@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731612642498
+current_stage: None
+description: null
+last_updated_timestamp: 1731612642498
+name: RandomForest_Heart_Model
+run_id: d9bf1c68717a466ab068a5ac9e29eb0f
+run_link: null
+source: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlflow_run/142457034204099968/d9bf1c68717a466ab068a5ac9e29eb0f/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///D:/Supinfo/M2/Ml/MLD/projet_mlops/mlflow_run/142457034204099968/d9bf1c68717a466ab068a5ac9e29eb0f/artifacts/model
+user_id: null
+version: 1

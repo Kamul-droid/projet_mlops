@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/a58ca2a542d14f54abf714f1bae8c51a/artifacts
+end_time: 1731612658717
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: a58ca2a542d14f54abf714f1bae8c51a
+run_name: merciful-gull-848
+run_uuid: a58ca2a542d14f54abf714f1bae8c51a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731612654177
+status: 4
+tags: []
+user_id: alika

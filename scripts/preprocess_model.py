@@ -1,6 +1,5 @@
 import mlflow.pyfunc as mlflow_func
 import pandas as pd
-import os
 import joblib
 
 

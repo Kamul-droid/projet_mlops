@@ -1,0 +1,32 @@
+artifact_path: artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.1
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.2
+mlflow_version: 2.17.2
+model_size_bytes: 332316
+model_uuid: 0ac49be622ce44fb9980031c32a95c27
+run_id: f9ac62898ad14b26ae244331a4180d6e
+signature:
+  inputs: '[{"type": "long", "name": "age", "required": true}, {"type": "long", "name":
+    "sex", "required": true}, {"type": "long", "name": "cp", "required": true}, {"type":
+    "long", "name": "trestbps", "required": true}, {"type": "long", "name": "chol",
+    "required": true}, {"type": "long", "name": "fbs", "required": true}, {"type":
+    "long", "name": "restecg", "required": true}, {"type": "long", "name": "thalach",
+    "required": true}, {"type": "long", "name": "exang", "required": true}, {"type":
+    "double", "name": "oldpeak", "required": true}, {"type": "long", "name": "slope",
+    "required": true}, {"type": "long", "name": "ca", "required": true}, {"type":
+    "long", "name": "thal", "required": true}]'
+  outputs: '[{"type": "long", "name": "target", "required": true}]'
+  params: null
+utc_time_created: '2024-11-14 19:31:11.542189'

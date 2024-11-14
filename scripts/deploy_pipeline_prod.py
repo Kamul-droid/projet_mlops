@@ -7,12 +7,11 @@ import mlflow
 import mlflow.sklearn
 import pandas as pd
 import seaborn as sns
-from mlflow.models import EvaluationResult, MetricThreshold, infer_signature
+from mlflow.models import infer_signature
 from prefect import flow, get_run_logger, task
 from preprocessing import DataPreprocessor
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
-                             roc_curve)
+from sklearn.metrics import accuracy_score, auc, confusion_matrix, f1_score, roc_curve
 from sklearn.model_selection import train_test_split
 
 # Configurer l'URI de suivi de MLflow
@@ -21,8 +20,7 @@ mlflow.set_tracking_uri(uri=MLFLOW_TRACKING_URI)
 
 # Description de l'expérience pour l'interface MLflow
 EXPERIMENT_DESCRIPTION: str = (
-    "This is the Heart disease prediction project. "
-    "This experiment contains the produce models for Heart Disease."
+    "This is the Heart disease prediction project. " "This experiment contains the produce models for Heart Disease."
 )
 EXPERIMENT_TAGS = {
     "project_name": "heart-disease-forecasting",
@@ -31,6 +29,7 @@ EXPERIMENT_TAGS = {
     "project_quarter": "Q4-2024",
     "mlflow.note.content": EXPERIMENT_DESCRIPTION,
 }
+
 
 @task
 def train_and_log_model():
@@ -73,10 +72,10 @@ def train_and_log_model():
 
     # Sauvegarde de la courbe ROC
     roc_path = save_roc_curve(fpr, tpr, roc_auc, artifacts_path)
-    
+
     # Sauvegarde de la matrice de confusion
     cm_path = save_confusion_matrix(cm, artifacts_path)
-    
+
     # Sauvegarde des métriques dans un fichier CSV
     metrics_csv_path = save_metrics_csv(accuracy, f1, artifacts_path)
 
@@ -90,6 +89,7 @@ def train_and_log_model():
 
     logger = get_run_logger()
     logger.info(f"Modèle entraîné avec succès : Accuracy={accuracy}, F1 Score={f1}")
+
 
 def save_roc_curve(fpr, tpr, roc_auc, artifacts_path: str) -> str:
     """Génère et sauvegarde la courbe ROC en tant qu'artefact."""
@@ -107,15 +107,24 @@ def save_roc_curve(fpr, tpr, roc_auc, artifacts_path: str) -> str:
     plt.close()
     return roc_path
 
+
 def save_confusion_matrix(cm, artifacts_path: str) -> str:
     """Génère et sauvegarde la matrice de confusion en tant qu'artefact."""
     plt.figure(figsize=(6, 5))
-    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["No Disease", "Disease"], yticklabels=["No Disease", "Disease"])
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=["No Disease", "Disease"],
+        yticklabels=["No Disease", "Disease"],
+    )
     plt.title("Matrice de confusion")
     cm_path = f"{artifacts_path}/confusion_matrix.png"
     plt.savefig(cm_path)
     plt.close()
     return cm_path
+
 
 def save_metrics_csv(accuracy: float, f1: float, artifacts_path: str) -> str:
     """Sauvegarde les métriques sous forme de fichier CSV."""
@@ -123,6 +132,7 @@ def save_metrics_csv(accuracy: float, f1: float, artifacts_path: str) -> str:
     metrics_csv_path = f"{artifacts_path}/metrics.csv"
     metrics_df.to_csv(metrics_csv_path, index=False)
     return metrics_csv_path
+
 
 def log_metrics_and_params(model, accuracy: float, f1: float, roc_path: str, cm_path: str, metrics_csv_path: str):
     """Enregistre les paramètres, métriques et artefacts dans MLflow."""
@@ -133,11 +143,13 @@ def log_metrics_and_params(model, accuracy: float, f1: float, roc_path: str, cm_
     mlflow.log_artifact(cm_path)
     mlflow.log_artifact(metrics_csv_path)
 
+
 def save_preprocessor(preprocessor: Any):
     """Sauvegarde le préprocesseur en tant qu'artefact MLflow."""
     with open("preprocessor.pkl", "wb") as f:
         cloudpickle.dump(preprocessor, f)
     mlflow.log_artifact("preprocessor.pkl")
+
 
 def prepare_evaluation_data(X_test: pd.DataFrame, y_test: pd.Series) -> pd.DataFrame:
     """Prépare les données pour l'évaluation du modèle."""
@@ -145,18 +157,22 @@ def prepare_evaluation_data(X_test: pd.DataFrame, y_test: pd.Series) -> pd.DataF
     eval_data["target"] = y_test
     return eval_data
 
+
 @task
 def evaluate_and_compare(run, artifact_path: str, candidate_model: Any, eval_data: pd.DataFrame, signature: Any):
     """Évalue le modèle candidat et compare avec les valeurs de référence."""
-    thresholds = {"accuracy_score": MetricThreshold(threshold=0.8, greater_is_better=True)}
     model_name = "RandomForestHeartDiseasesPredictionsModel"
-    model_uri = mlflow.sklearn.log_model(sk_model=candidate_model, artifact_path=artifact_path, signature=signature).model_uri
+    model_uri = mlflow.sklearn.log_model(
+        sk_model=candidate_model, artifact_path=artifact_path, signature=signature
+    ).model_uri
     mlflow.register_model(model_uri, model_name)
     # Comparaison avec le modèle de référence pourrait être ajouté ici si applicable
+
 
 @flow(name="model-training-pipeline")
 def main_flow():
     train_and_log_model()
+
 
 if __name__ == "__main__":
     main_flow()

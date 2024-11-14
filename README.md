@@ -20,10 +20,6 @@ Le fichier `config/config.yaml` permet de configurer :
 4. **server.py** : API pour lancer les processus via des endpoints HTTP avec **FastAPI**.
 
 
-
-
-
-
 ### Installation des dépendances et démarrage des services
 
 Le projet utilise Docker pour simplifier l’installation et le déploiement. Suivez les instructions ci-dessous pour construire l'image Docker et démarrer les services nécessaires.
@@ -46,6 +42,9 @@ Cette commande démarre les services suivants :
 
 Prefect UI (accessible à l'adresse : http://localhost:4200)
 MLflow UI (accessible à l'adresse : http://localhost:5000)
+Jupiter Lab UI (accessible à l'adresse : http://localhost:6200) # Utiliser le token afficher dans le terminal pour se connecter
+Server FastApi  (accessible à l'adresse : http://localhost:8000) # Utiliser pour le data quality check
+
 
 
  
@@ -73,7 +72,7 @@ docker exec -it [nom_du_conteneur] /bin/sh
 Puis pour entraîner le modèle de **Logistic_regression**, exécuter la commande suivante :
 
   ```poetry shell
-poetry run python scripts/pipeline_2.py
+python scripts/pipeline_2.py
    ```
 
 
@@ -82,7 +81,7 @@ poetry run python scripts/pipeline_2.py
 **- pipeline de RandomForest**
 Puis pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```poetry shell
-poetry run python scripts/pipeline_3.py
+ python scripts/pipeline_3.py
    ```
 
 

@@ -17,17 +17,7 @@ else:  # Linux or MacOS
 logged_model = "runs:/a9f6bf7101724ab591340cb90b5aff2e/artifacts"
 
 # Build the Docker image for the model
-subprocess.run([
-    "mlflow", "models", "build-docker",
-    "-m", logged_model,
-    "-n", "mlmodelprod",
-    "--enable-mlserver"
-])
+subprocess.run(["mlflow", "models", "build-docker", "-m", logged_model, "-n", "mlmodelprod", "--enable-mlserver"])
 
 # Run the Docker container with the model served at port 5001
-subprocess.run([
-    "docker", "run",
-    "-p", "5001:8080",
-    "mlmodelprod",
-    "-t", "production"
-])
+subprocess.run(["docker", "run", "-p", "5001:8080", "mlmodelprod", "-t", "production"])

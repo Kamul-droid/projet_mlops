@@ -1,8 +1,7 @@
 from typing import Any, Dict
 
 import mlflow
-from mlflow.models import (convert_input_example_to_serving_input,
-                           validate_serving_input)
+from mlflow.models import convert_input_example_to_serving_input, validate_serving_input
 
 # Constantes
 MLFLOW_TRACKING_URI: str = "http://localhost:5000"
@@ -10,6 +9,7 @@ MODEL_URI: str = "runs:/e095852ec5f64e89894a61edb466ce8e/artifacts"
 
 # Configuration de l'URI de suivi MLflow
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
 
 def generate_serving_payload(input_example: Dict[str, Any]) -> Dict[str, Any]:
     """Génère une charge utile (payload) de prédiction pour tester l'entrée du modèle avant le déploiement.
@@ -21,6 +21,7 @@ def generate_serving_payload(input_example: Dict[str, Any]) -> Dict[str, Any]:
         Dict[str, Any]: Données transformées prêtes pour l'inférence.
     """
     return convert_input_example_to_serving_input(input_example)
+
 
 def validate_model_serving_payload(model_uri: str, payload: Dict[str, Any]) -> None:
     """Valide la charge utile de prédiction avec le modèle pour vérifier que l'entrée est correcte.
@@ -34,6 +35,7 @@ def validate_model_serving_payload(model_uri: str, payload: Dict[str, Any]) -> N
     """
     validate_serving_input(model_uri, payload)
     print("Validation réussie pour la charge utile du modèle.")
+
 
 if __name__ == "__main__":
     # Exemple de données d'entrée pour le modèle
@@ -50,7 +52,7 @@ if __name__ == "__main__":
         "oldpeak": [2.3],
         "slope": [2],
         "ca": [0],
-        "thal": [1]
+        "thal": [1],
     }
 
     # Générer et valider la charge utile de prédiction pour le modèle

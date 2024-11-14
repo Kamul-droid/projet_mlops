@@ -1,0 +1,16 @@
+digest: c7a7149f
+name: dataset
+profile: '{"num_rows": 61, "num_elements": 854}'
+schema: '{"mlflow_colspec": [{"type": "long", "name": "age", "required": true}, {"type":
+  "long", "name": "sex", "required": true}, {"type": "long", "name": "cp", "required":
+  true}, {"type": "long", "name": "trestbps", "required": true}, {"type": "long",
+  "name": "chol", "required": true}, {"type": "long", "name": "fbs", "required": true},
+  {"type": "long", "name": "restecg", "required": true}, {"type": "long", "name":
+  "thalach", "required": true}, {"type": "long", "name": "exang", "required": true},
+  {"type": "double", "name": "oldpeak", "required": true}, {"type": "long", "name":
+  "slope", "required": true}, {"type": "long", "name": "ca", "required": true}, {"type":
+  "long", "name": "thal", "required": true}, {"type": "long", "name": "target", "required":
+  true}]}'
+source: '{"tags": {"mlflow.user": "alika", "mlflow.source.name": ".\\scripts\\pipeline_random_forest__one_flow.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "85ad98771d773fec4b57a95fc9bc3c2859632d9b"}}'
+source_type: code

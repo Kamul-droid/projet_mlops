@@ -1,4 +1,3 @@
-import datetime
 import os
 from typing import Dict
 
@@ -10,21 +9,20 @@ import seaborn as sns
 from mlflow.models import EvaluationResult, MetricThreshold, infer_signature
 from prefect import flow, get_run_logger, task
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (accuracy_score, auc, confusion_matrix, f1_score,
-                             roc_curve)
+from sklearn.metrics import accuracy_score, auc, confusion_matrix, f1_score, roc_curve
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 # Define the baseline model URI (replace manually as needed)
-logged_model = 'runs:/836b6df347c241e2803d8b8b072fa2af/artifacts'
+logged_model = "runs:/836b6df347c241e2803d8b8b072fa2af/artifacts"
 baseline_model_uri = logged_model
-#baseline_model_uri = None
+# baseline_model_uri = None
 
 
 # Define accuracy threshold
 thresholds: Dict[str, MetricThreshold] = {
     "accuracy_score": MetricThreshold(
-        threshold=0.85,  
+        threshold=0.85,
         greater_is_better=True,
     ),
 }
@@ -36,6 +34,7 @@ experiment_tags: Dict[str, str] = {
     "project_quarter": "Q4-2024",
     "mlflow.note.content": "This is the Heart disease prediction project.",
 }
+
 
 @task(retries=20, retry_delay_seconds=10)
 def train_and_log_model() -> None:
@@ -72,12 +71,12 @@ def train_and_log_model() -> None:
     # Save the ROC curve as an artifact
     roc_path = os.path.join(artifacts_path, "roc_curve.png")
     plt.figure()
-    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver Operating Characteristic')
-    plt.legend(loc='lower right')
+    plt.plot(fpr, tpr, color="darkorange", lw=2, label=f"ROC curve (area = {roc_auc:.2f})")
+    plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("Receiver Operating Characteristic")
+    plt.legend(loc="lower right")
     plt.savefig(roc_path)
     plt.close()
 
@@ -109,7 +108,7 @@ def train_and_log_model() -> None:
         mlflow.log_param("model_type", "LogisticRegression")
         mlflow.log_metric("accuracy", accuracy)
         mlflow.log_metric("f1_score", f1)
-        
+
         mlflow.log_artifact(roc_path)
         mlflow.log_artifact(cm_path)
         mlflow.log_artifact(metrics_csv_path)
@@ -127,15 +126,16 @@ def train_and_log_model() -> None:
     logger.info(f"Logistic regression model trained successfully: Accuracy={accuracy}, F1 Score={f1}")
 
     if accuracy < thresholds["accuracy_score"].threshold:
-        raise ValueError(f"Accuracy {accuracy:.2f} below threshold {thresholds['accuracy_score'].threshold}, retry triggered.")
+        raise ValueError(
+            f"Accuracy {accuracy:.2f} below threshold {thresholds['accuracy_score'].threshold}, retry triggered."
+        )
+
 
 @task
 def evaluate_and_compare(run, artifact_path: str, candidate_model, eval_data: pd.DataFrame, signature) -> None:
     model_name = "LogisticRegression_Heart_Model"
     model_uri = mlflow.sklearn.log_model(
-        sk_model=candidate_model,
-        artifact_path=artifact_path,
-        signature=signature
+        sk_model=candidate_model, artifact_path=artifact_path, signature=signature
     ).model_uri
 
     mlflow.register_model(model_uri, model_name)
@@ -147,13 +147,15 @@ def evaluate_and_compare(run, artifact_path: str, candidate_model, eval_data: pd
             targets="target",
             model_type="classifier",
             validation_thresholds=thresholds,
-            baseline_model=baseline_model_uri
+            baseline_model=baseline_model_uri,
         )
         print("Evaluation Result:", evaluation_result.metrics)
+
 
 @flow(name="data-quality-training-pipeline")
 def main_flow() -> None:
     train_and_log_model()
+
 
 if __name__ == "__main__":
     main_flow()
