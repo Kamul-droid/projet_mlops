@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/38f78105babf42bd9da1c37ad49cb196/artifacts
+end_time: 1731512300923
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: 38f78105babf42bd9da1c37ad49cb196
+run_name: hilarious-carp-789
+run_uuid: 38f78105babf42bd9da1c37ad49cb196
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731512233257
+status: 4
+tags: []
+user_id: alika

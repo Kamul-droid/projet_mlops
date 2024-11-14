@@ -38,7 +38,7 @@ Le fichier `config/config.yaml` permet de configurer :
 
 
  ```poetry shell
-poetry run jupyter lab --port=6200
+py -m poetry run jupyter lab --port=6200
 ```
 
 
@@ -85,7 +85,7 @@ docker build -t heart-attack-data-pipeline .
    Une fois l'image construite, lancez un conteneur avec la commande suivante :
 
 ```poetry shell
-docker run -p 8000:8000 -p 6200:6200 -p 5000:5000 -p 4200:4200 heart-attack-data
+docker run -it --rm -p 8000:8000 -p 6200:6200 -p 5000:5000 -p 4200:4200 -p 3000:3000 -v "$(pwd):/app" heart-attack-data-pipeline
    ```
 
 
@@ -112,6 +112,7 @@ Une fois que vous avez le nom du conteneur, exécutez la commande suivante pour 
 
 ```
 docker exec -it [nom_du_conteneur] /bin/sh
+docker exec -it [nom_du_conteneur] /bin/sh
 ```
 
 
@@ -121,12 +122,17 @@ Puis pour entraîner le modèle de **Logistic_regression**, exécuter la command
 
   ```poetry shell
 poetry run python scripts/pipeline_logistic regression.py
+
    ```
+
+
+
 
 **- pipeline de RandomForest**
 Puis pour entraîner le  modèle de RandomForest, exécute la commande suivante :
   ```poetry shell
 poetry run python scripts/pipeline_random forest.py
+
    ```
 
 

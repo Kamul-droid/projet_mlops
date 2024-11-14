@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import joblib
 
+
 # Modèle MLflow personnalisé pour appliquer le prétraitement et effectuer des prédictions
 class PreprocessingModel(mlflow_func.PythonModel):
     def load_context(self, context):
@@ -15,7 +16,7 @@ class PreprocessingModel(mlflow_func.PythonModel):
     def predict(self, context, model_input: pd.DataFrame) -> pd.Series:
         """
         Applique le prétraitement aux données d'entrée et effectue la prédiction.
-        
+
         Args:
             context : Contexte d'exécution MLflow.
             model_input (pd.DataFrame): Données d'entrée brutes sous forme de DataFrame.
@@ -28,6 +29,6 @@ class PreprocessingModel(mlflow_func.PythonModel):
         # Extraction des noms de colonnes du préprocesseur
         transformed_columns = self.preprocessor.get_feature_names_out()
         processed_input_df = pd.DataFrame(processed_input, columns=transformed_columns)
-        
+
         # Faire la prédiction
         return self.model.predict(processed_input_df)

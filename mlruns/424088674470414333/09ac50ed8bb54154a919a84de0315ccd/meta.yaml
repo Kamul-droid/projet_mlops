@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/09ac50ed8bb54154a919a84de0315ccd/artifacts
+end_time: 1731511930653
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: 09ac50ed8bb54154a919a84de0315ccd
+run_name: colorful-robin-280
+run_uuid: 09ac50ed8bb54154a919a84de0315ccd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731511925405
+status: 3
+tags: []
+user_id: alika

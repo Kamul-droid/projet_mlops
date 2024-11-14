@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/e42be7f398f54629bf8b10dcdb46bf79/artifacts
+end_time: 1731512703763
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: e42be7f398f54629bf8b10dcdb46bf79
+run_name: unequaled-bug-694
+run_uuid: e42be7f398f54629bf8b10dcdb46bf79
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731512698172
+status: 3
+tags: []
+user_id: alika

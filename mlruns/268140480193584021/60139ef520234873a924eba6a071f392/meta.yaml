@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/268140480193584021/60139ef520234873a924eba6a071f392/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '268140480193584021'
+lifecycle_stage: active
+run_id: 60139ef520234873a924eba6a071f392
+run_name: capable-loon-317
+run_uuid: 60139ef520234873a924eba6a071f392
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731584807459
+status: 1
+tags: []
+user_id: alika

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/268140480193584021/786475390e49443b8c7e6dc5d4ccbe68/artifacts
+end_time: 1731585241903
+entry_point_name: ''
+experiment_id: '268140480193584021'
+lifecycle_stage: active
+run_id: 786475390e49443b8c7e6dc5d4ccbe68
+run_name: exultant-mole-6
+run_uuid: 786475390e49443b8c7e6dc5d4ccbe68
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731585239333
+status: 3
+tags: []
+user_id: alika

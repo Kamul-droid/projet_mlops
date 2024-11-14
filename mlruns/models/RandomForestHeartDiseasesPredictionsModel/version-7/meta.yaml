@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1731603668016
+current_stage: None
+description: ''
+last_updated_timestamp: 1731603668016
+name: RandomForestHeartDiseasesPredictionsModel
+run_id: 72f9af57ec474d3a9fd97af2c36abc59
+run_link: ''
+source: mlflow-artifacts:/268140480193584021/72f9af57ec474d3a9fd97af2c36abc59/artifacts/artifacts
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/268140480193584021/72f9af57ec474d3a9fd97af2c36abc59/artifacts/artifacts
+user_id: null
+version: 7

@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/175533410696236916
+creation_time: 1731604142402
+experiment_id: '175533410696236916'
+last_update_time: 1731604142402
+lifecycle_stage: active
+name: Model created with external preprocessing

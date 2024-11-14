@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/268140480193584021/72f9af57ec474d3a9fd97af2c36abc59/artifacts
+end_time: 1731603668074
+entry_point_name: ''
+experiment_id: '268140480193584021'
+lifecycle_stage: active
+run_id: 72f9af57ec474d3a9fd97af2c36abc59
+run_name: melodic-seal-559
+run_uuid: 72f9af57ec474d3a9fd97af2c36abc59
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731603662460
+status: 3
+tags: []
+user_id: alika

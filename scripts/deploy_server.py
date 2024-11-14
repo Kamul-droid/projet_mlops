@@ -1,16 +1,33 @@
+import os
 import subprocess
 
-import mlflow
+# Set the MLFLOW_TRACKING_URI based on the OS
+tracking_uri = "http://localhost:5000"
+if os.name == "nt":  # Windows
+    # For Windows CMD
+    subprocess.run(["set", f"MLFLOW_TRACKING_URI={tracking_uri}"], shell=True)
+    # For Windows PowerShell
+    os.environ["MLFLOW_TRACKING_URI"] = tracking_uri
+else:  # Linux or MacOS
+    # For Unix-based systems
+    subprocess.run(["export", f"MLFLOW_TRACKING_URI={tracking_uri}"], shell=True)
+    # os.environ["MLFLOW_TRACKING_URI"] = tracking_uri
 
-# #Windows
-# set MLFLOW_TRACKING_URI=http://localhost:5000
-# #PS Windows
-# $env:MLFLOW_TRACKING_URI="http://localhost:5000"
-# #Linux 
-# export MLFLOW_TRACKING_URI=http://localhost:5000
+# URI of the MLflow model
+logged_model = "runs:/a9f6bf7101724ab591340cb90b5aff2e/artifacts"
 
-# URI du modèle MLflow
-logged_model = 'runs:/e095852ec5f64e89894a61edb466ce8e/artifacts'
+# Build the Docker image for the model
+subprocess.run([
+    "mlflow", "models", "build-docker",
+    "-m", logged_model,
+    "-n", "mlmodelprod",
+    "--enable-mlserver"
+])
 
-# Déployer le modèle en utilisant la commande `mlflow models serve`
-subprocess.run(["mlflow", "models", "serve", "-m", logged_model, "-p", "3000" ,"--enable-mlserver"])
+# Run the Docker container with the model served at port 5001
+subprocess.run([
+    "docker", "run",
+    "-p", "5001:8080",
+    "mlmodelprod",
+    "-t", "production"
+])

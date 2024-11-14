@@ -14,6 +14,7 @@ def load_config() -> dict:
     with open("config/config.yaml", "r") as file:
         return yaml.safe_load(file)
 
+
 def check_null_values(df: pd.DataFrame) -> pd.Series:
     """
     Vérifie le nombre de valeurs nulles par colonne.
@@ -26,6 +27,7 @@ def check_null_values(df: pd.DataFrame) -> pd.Series:
     """
     return df.isnull().sum()
 
+
 def check_duplicates(df: pd.DataFrame) -> int:
     """
     Vérifie le nombre de doublons dans le DataFrame.
@@ -37,6 +39,7 @@ def check_duplicates(df: pd.DataFrame) -> int:
         int: Nombre de doublons trouvés.
     """
     return df.duplicated().sum()
+
 
 def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str, bool]:
     """
@@ -51,7 +54,7 @@ def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str
     """
     ge_df = ge.dataset.PandasDataset(df)
     expected_types = config["expected_data_types"]
-    
+
     results = {}
 
     for column, dtype in expected_types.items():
@@ -60,9 +63,9 @@ def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str
 
     age_check = ge_df.expect_column_values_to_be_between("age", min_value=1, max_value=120)
     sex_check = ge_df.expect_column_values_to_be_in_set("sex", [0, 1])
-    chol_check = ge_df.expect_column_values_to_be_between("chol", min_value=100, max_value=500)  
+    chol_check = ge_df.expect_column_values_to_be_between("chol", min_value=100, max_value=500)
     fbs_check = ge_df.expect_column_values_to_be_in_set("fbs", [0, 1])
-    trestbps_check = ge_df.expect_column_values_to_be_between("trestbps", min_value=80, max_value=200) 
+    trestbps_check = ge_df.expect_column_values_to_be_between("trestbps", min_value=80, max_value=200)
 
     results["age_value_check"] = age_check.success
     results["sex_value_check"] = sex_check.success
@@ -71,6 +74,7 @@ def validate_with_great_expectations(df: pd.DataFrame, config: dict) -> Dict[str
     results["trestbps_value_check"] = trestbps_check.success
 
     return results
+
 
 def delete_outliers(df: pd.DataFrame, thresholds: Dict[str, Tuple[float, float]]) -> pd.DataFrame:
     """
@@ -105,14 +109,10 @@ def main() -> None:
     validation_results = validate_with_great_expectations(df, config)
     print("Résultats des contrôles de qualité avec Great Expectations:\n", validation_results)
 
-    thresholds = {
-        "age": (1, 120),
-        "chol": (100, 500),
-        "fbs": (0, 1),
-        "trestbps": (80, 200)
-    }
+    thresholds = {"age": (1, 120), "chol": (100, 500), "fbs": (0, 1), "trestbps": (80, 200)}
     df_cleaned = delete_outliers(df, thresholds)
     print(f"Nombre d'enregistrements après suppression des outliers: {len(df_cleaned)}")
+
 
 if __name__ == "__main__":
     main()

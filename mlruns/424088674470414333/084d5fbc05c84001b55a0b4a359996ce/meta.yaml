@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/424088674470414333/084d5fbc05c84001b55a0b4a359996ce/artifacts
+end_time: 1731512121719
+entry_point_name: ''
+experiment_id: '424088674470414333'
+lifecycle_stage: active
+run_id: 084d5fbc05c84001b55a0b4a359996ce
+run_name: thoughtful-roo-323
+run_uuid: 084d5fbc05c84001b55a0b4a359996ce
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731512057614
+status: 4
+tags: []
+user_id: alika

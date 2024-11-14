@@ -1,5 +1,6 @@
-aliases: {}
+aliases:
+  champion: '7'
 creation_timestamp: 1731494507666
 description: ''
-last_updated_timestamp: 1731494620014
+last_updated_timestamp: 1731571392796
 name: RandomForestHeartDiseaseModel1

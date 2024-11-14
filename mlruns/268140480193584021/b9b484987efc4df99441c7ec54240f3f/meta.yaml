@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/268140480193584021/b9b484987efc4df99441c7ec54240f3f/artifacts
+end_time: 1731602306409
+entry_point_name: ''
+experiment_id: '268140480193584021'
+lifecycle_stage: active
+run_id: b9b484987efc4df99441c7ec54240f3f
+run_name: marvelous-jay-146
+run_uuid: b9b484987efc4df99441c7ec54240f3f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1731602300514
+status: 3
+tags: []
+user_id: alika

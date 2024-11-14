@@ -42,4 +42,4 @@ typecheck = { cmd = "mypy .." }
 [tool.ruff]
 indent-width = 4
 line-length = 120
-target-version = "py312"
+target-version = "py311"
