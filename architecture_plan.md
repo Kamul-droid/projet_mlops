@@ -1,4 +1,5 @@
 # Architecture du Pipeline de Données
+https://github.com/Kamul-droid/projet_mlops.git
 
 ## Objectif
 Ce projet vise à créer un pipeline de données pour la préparation de données de crises cardiaques. Il garantit la qualité des données en utilisant des contrôles automatiques basés sur **Great Expectations**.
