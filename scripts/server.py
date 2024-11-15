@@ -57,7 +57,7 @@ def get_data() -> list:
         list: Liste des enregistrements sous forme de dictionnaires.
     """
     try:
-        data = pd.read_csv("data/processed_heart.csv").head(10)
+        data = pd.read_csv("../data/processed_heart.csv").head(10)
         return data.to_dict(orient="records")
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Le fichier CSV est introuvable.")
@@ -78,14 +78,14 @@ def preprocess() -> dict:
         dict: Message confirmant la fin du prétraitement.
     """
     try:
-        df = pd.read_csv("data/processed_heart.csv")
+        df = pd.read_csv("../data/processed_heart.csv")
 
         X_train_clean, X_test_clean, y_train, y_test = preprocess_data(df)
 
-        X_train_clean.to_csv("data/X_train_clean.csv", index=False)
-        X_test_clean.to_csv("data/X_test_clean.csv", index=False)
-        pd.DataFrame(y_train).to_csv("data/y_train.csv", index=False)
-        pd.DataFrame(y_test).to_csv("data/y_test.csv", index=False)
+        X_train_clean.to_csv("../data/X_train_clean.csv", index=False)
+        X_test_clean.to_csv("../data/X_test_clean.csv", index=False)
+        pd.DataFrame(y_train).to_csv("../data/y_train.csv", index=False)
+        pd.DataFrame(y_test).to_csv("../data/y_test.csv", index=False)
 
         return {"message": "Prétraitement terminé avec succès."}
 

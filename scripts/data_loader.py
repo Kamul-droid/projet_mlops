@@ -9,7 +9,7 @@ def load_config() -> dict:
     Returns:
         dict: Dictionnaire contenant la configuration chargée depuis le fichier YAML.
     """
-    with open("config/config.yaml", "r") as file:
+    with open("../config/config.yaml", "r") as file:
         return yaml.safe_load(file)
 
 
@@ -43,8 +43,12 @@ def main() -> None:
     et configuration des chemins de fichier.
     """
     config = load_config()
-    data = load_data(config["data_path"])
-    save_data(data, config["processed_data_path"])
+    path =config["data_path"]
+    print(path)
+    data = load_data(f"../{path}")
+    # data = load_data(config["data_path"])
+    process_path=config["processed_data_path"]
+    save_data(data, f"../{process_path}")
     print("Ingestion des données terminée et enregistrée pour les contrôles de qualité.")
 
 

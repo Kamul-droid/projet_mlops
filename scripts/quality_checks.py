@@ -1,7 +1,8 @@
+from typing import Dict, Tuple
+
 import great_expectations as ge
 import pandas as pd
 import yaml
-from typing import Dict, Tuple
 
 
 def load_config() -> dict:
@@ -11,7 +12,7 @@ def load_config() -> dict:
     Returns:
         dict: Dictionnaire contenant la configuration des données et les types attendus.
     """
-    with open("config/config.yaml", "r") as file:
+    with open("../config/config.yaml", "r") as file:
         return yaml.safe_load(file)
 
 
@@ -98,7 +99,8 @@ def main() -> None:
     Fonction principale pour exécuter toutes les vérifications de qualité sur les données.
     """
     config = load_config()
-    df = pd.read_csv(config["processed_data_path"])
+    path =config["processed_data_path"]
+    df = pd.read_csv(f"../{path}")
 
     null_values = check_null_values(df)
     print("Valeurs nulles:\n", null_values)
