@@ -67,8 +67,14 @@ Voici la structure du projet :
 │
 ├── /data                    # Fichiers de données : X_train_clean.csv, X_test_clean.csv, y_train.csv, y_test.csv
 ├── /scripts                 # Scripts des pipelines et autres tâches
-│   ├── pipeline_2.py        # Pipeline avec régression logistique
-│   ├── pipeline_3.py        # Pipeline avec RandomForest
+│   ├── deploy_pipeline_prod.py    # Utilisez pour le modèle déployer (Sauvegarde du preprocesseur et du modèle en deux fichiers pickle séparé)
+│   ├── deploy_server.py    # Lance un conteneur docker pour l'inférence
+│   ├── make_predictions.py    # Test du déploiement avec des données d'exemple
+│   ├── validate_model.py    # Test du modèle dans le registry de MLflow
+│   ├── pipeline_logistic_regression_one_flow.py        # Pipeline avec régression logistique; comprend un pipeline qui associe le preprocessing au modèle
+│   ├── pipeline_logisticregression_task_oriented.py        # Pipeline avec régression logistique
+│   ├── pipeline_randomforest_task_oriented.py        # Pipeline avec RandomForest
+│   ├── pipeline_random_forest__one_flow.py        # Pipeline avec RandomForest;  comprend un pipeline qui associe le preprocessing au modèle
 │   ├── data_loader.py       # Chargement des données
 │   ├── preprocessing.py     # Prétraitement des données
 │   ├── quality_checks.py    # Contrôle de la qualité des données
