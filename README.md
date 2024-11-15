@@ -128,7 +128,6 @@ Pour demarrer les services de prefect :
 - Une interface web (Prefect UI) pour visualiser et gérer les workflows
 L’interface web sera disponible à l'adresse suivante : http://localhost:4200
 
-
 ### Démarrage de MLflow UI
 scripts/mlfow_run est le répertoire dans lequel les expériences et les artefacts et les mmodéles seront sauvegardés
 Ouvrir un shell poetry avec la  CMD `poetry shell` à la racine du projet :
@@ -232,8 +231,7 @@ Voici la structure du projet :
 ├── /great_expectations      # Vérification de la qualité des données (expectations)
 └── config.yaml              # Fichier de configuration pour l'orchestration
 
-
-
+```
 # Script de Déploiement - `deploy_server.py`
 
 Ce script est utilisé pour déployer un modèle MLflow entraîné en tant que conteneur Docker, qui sert le modèle pour l'inférence. Assurez-vous que les serveurs Prefect et MLflow sont en ligne et accessibles avant d'exécuter ce script. De plus, ce script nécessite un environnement virtuel Poetry actif avec toutes les dépendances installées.
